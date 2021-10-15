@@ -39,10 +39,10 @@ public class CameraPreviewActivity extends AppCompatActivity {
     private ApplicationInfo applicationInfo;
 
 //    private static final String BINARY_GRAPH_NAME = "face_detection_mobile_gpu.binarypb";
-    private static final String BINARY_GRAPH_NAME = "face_detection_mobile_gpu.binarypb";
+    private static final String BINARY_GRAPH_NAME = "card_liveness_graph.binarypb";
 //    private static final String BINARY_GRAPH_NAME = "face_mesh_mobile_gpu.binarypb";
-    private static final String INPUT_VIDEO_STREAM_NAME = "input_video";
-    private static final String OUTPUT_VIDEO_STREAM_NAME = "output_video";
+    private static final String INPUT_VIDEO_STREAM_NAME = "input_frames";
+    private static final String OUTPUT_VIDEO_STREAM_NAME = "output_frames";
 
 
     static {
@@ -177,5 +177,4 @@ public class CameraPreviewActivity extends AppCompatActivity {
                             }
                         });
     }
-
 }
