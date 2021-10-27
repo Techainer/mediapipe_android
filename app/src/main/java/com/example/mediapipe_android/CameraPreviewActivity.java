@@ -8,8 +8,6 @@ import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
 import android.content.pm.PackageManager.NameNotFoundException;
 import android.graphics.SurfaceTexture;
-import android.os.Bundle;
-import androidx.appcompat.app.AppCompatActivity;
 import android.util.Log;
 import android.util.Size;
 import android.view.SurfaceHolder;
@@ -27,9 +25,8 @@ import com.google.mediapipe.glutil.EglManager;
 public class CameraPreviewActivity extends AppCompatActivity {
     private static final String TAG = "MainActivity";
 
-    private static final boolean FLIP_FRAMES_VERTICALLY = true;
+    private static final boolean FLIP_FRAMES_VERTICALLY = false;
 
-    private static final int NUM_BUFFERS = 2;
     protected FrameProcessor processor;
     protected CameraXPreviewHelper cameraHelper;
     private SurfaceTexture previewFrameTexture;
@@ -38,12 +35,9 @@ public class CameraPreviewActivity extends AppCompatActivity {
     private ExternalTextureConverter converter;
     private ApplicationInfo applicationInfo;
 
-//    private static final String BINARY_GRAPH_NAME = "face_detection_mobile_gpu.binarypb";
     private static final String BINARY_GRAPH_NAME = "card_liveness_graph.binarypb";
-//    private static final String BINARY_GRAPH_NAME = "face_mesh_mobile_gpu.binarypb";
     private static final String INPUT_VIDEO_STREAM_NAME = "input_frames";
     private static final String OUTPUT_VIDEO_STREAM_NAME = "output_frames";
-
 
     static {
         System.loadLibrary("mediapipe_jni");
@@ -158,23 +152,24 @@ public class CameraPreviewActivity extends AppCompatActivity {
         viewGroup.addView(previewDisplayView);
 
         previewDisplayView
-                .getHolder()
-                .addCallback(
-                        new SurfaceHolder.Callback() {
-                            @Override
-                            public void surfaceCreated(SurfaceHolder holder) {
-                                Log.e("HieuNT","surface created");
-                                processor.getVideoSurfaceOutput().setSurface(holder.getSurface());
-                            }
-                            @Override
-                            public void surfaceChanged(SurfaceHolder holder, int format, int width, int height) {
-                                onPreviewDisplaySurfaceChanged(holder, format, width, height);
-                            }
-                            @Override
-                            public void surfaceDestroyed(SurfaceHolder holder) {
-                                Log.e("HieuNT","surface Destroyed");
-                                processor.getVideoSurfaceOutput().setSurface(null);
-                            }
-                        });
+            .getHolder()
+            .addCallback(
+                new SurfaceHolder.Callback() {
+                @Override
+                public void surfaceCreated(SurfaceHolder holder) {
+                    Log.e("HieuNT","surface created");
+                    processor.getVideoSurfaceOutput().setSurface(holder.getSurface());
+                }
+                @Override
+                public void surfaceChanged(SurfaceHolder holder, int format, int width, int height) {
+                    onPreviewDisplaySurfaceChanged(holder, format, width, height);
+                }
+                @Override
+                public void surfaceDestroyed(SurfaceHolder holder) {
+                    Log.e("HieuNT","surface Destroyed");
+                    processor.getVideoSurfaceOutput().setSurface(null);
+                }
+            });
+
     }
 }
