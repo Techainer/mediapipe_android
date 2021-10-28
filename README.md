@@ -1,20 +1,20 @@
 # Mediapipe Android 
-- Project demo việc run các model AI bằng mediapipe
-
+- This repo is a demo mediapipe graph in android project.
 ## Install and running
-- Clone source này về
-
-- Mở bằng android studio và async
-- Cắm thiết bị android và và chạy
+- Clone this repo 
+```
+https://github.com/Techainer/mediapipe_android.git
+```
+- Run by android studio
 
 ## Building own customize graph 
-### Clone mediapipe[]
-Đầu tiên chúng ta cần phải clone mediapipe. Sau sử dụng frame work này để build graph và các thư viện liên quan. 
+### Clone mediapipe
+First, we need to clone the mediapipe. Then use this framework to build graphs, android jar file and shared library.
 ```
 git clone https://github.com/google/mediapipe.git
 ```
 ### Docker
-- Để thuận tiện cho việc setup môi trường thì nên sử dụng docker. 
+- For the convenience of setting up the environment, you should use docker.
 ```
 cd mediapipe
 docker build --tag=mediapipe .
@@ -22,7 +22,6 @@ docker run -it --name mediapipe mediapipe:latest
 ```
 
 - When enter docker again:
-
 ```
 docker start [your container ID] 
 docker exec -i -t mediapipe bash
@@ -40,7 +39,8 @@ bash ./setup_android_sdk_and_ndk.sh
 
 ### Prepare
 - Add env variable 
-Để thuận tiện cho việc build nhiều project khác nhau thì chúng ta cần phải đặt tên project theo đúng convention. chúng ta sẽ sử dụng biến môi trường. Bạn hãy chỉnh sửa nó cho phù hợp với ứng dụng của minh. 
+To easily work with mediapipe, we need to name the project, graph according to a rule.
+We will use environment variables. Change project_name to your project name.
 ```
 export project_name="flutter_mediapipe"
 ```
@@ -52,21 +52,22 @@ nano mediapipe/examples/android/src/java/com/google/mediapipe/apps/${project_nam
 ```
 
 - "BUILD" file content.
+change project_name to your project name
 ```
 load("//mediapipe/java/com/google/mediapipe:mediapipe_aar.bzl", "mediapipe_aar")
 mediapipe_aar(
-    name = {{ your project_name }},
+    name = "{{ project_name }}",
     calculators = ["//mediapipe/graphs/{{ project_name }}:mobile_calculators"],
 )
 ```
 
-### Xây dựng graph 
-- "BUILD" file.
+### GRAPH
+- Graph "BUILD" file.
 ```
 mkdir mediapipe/mediapipe/graphs/${project_name}
 nano mediapipe/mediapipe/graphs/${project_name}/BUILD
 ```
-- "BUILD" file content.
+- Graph "BUILD" file content.
 change project_name by your project name
 ```
 licenses(["notice"])
@@ -98,27 +99,19 @@ mediapipe_binary_graph(
 )
 ```
 
-- GRAPH file
+- Graph file
 ```
 nano mediapipe/examples/android/src/java/com/google/mediapipe/apps/${project_name}/${project_name}.pbtxt
 ```
 
-- GRAPH file content
+- Graph file content
 ```
-# MediaPipe graph that performs GPU Sobel edge detection on a live video stream.
-# Used in the examples in
-# mediapipe/examples/android/src/java/com/mediapipe/apps/edgedetectiongpu and
-# mediapipe/examples/ios/edgedetectiongpu.
-
-# Images coming into and out of the graph.
+# Define input, ouput
 input_stream: "input_frames"
 output_stream: "output_frames"
 output_stream: "scores_list"
 
-# IMPORTANT:
-# WebDemos can only use a single threaded executor. Your browser will freeze if
-# you don't do this.
-
+# Graph pipeline
 node {
   calculator: "FlowLimiterCalculator"
   input_stream: "input_frames"
@@ -229,14 +222,14 @@ unzip flutter_mediapipe.zip
 ```
 
 ## Integrating 
-- Copy libs file.jar to lib in this android repo
-- Copy jnib to jnib in this android repo
-- Copy binary graph in asset to this repo asset 
+- Copy libs file.jar to this repo libs
+- Copy jnib to jnib to this android repo
+- Copy binary graph to this repo asset 
 - Copy AI model to this repo asset 
 - Change graph name in CameraActivity.java 
 
 ## reference
-- Flutter Mediapipe 
-- Hello Android 
-- Android Archive meiapipe 
+- https://pub.dev/packages/flutter_mediapipe 
+- https://google.github.io/mediapipe/getting_started/hello_world_android.html
+- https://google.github.io/mediapipe/getting_started/android_archive_library.html
 
