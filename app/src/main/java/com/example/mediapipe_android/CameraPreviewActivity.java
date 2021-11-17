@@ -25,7 +25,7 @@ import com.google.mediapipe.glutil.EglManager;
 public class CameraPreviewActivity extends AppCompatActivity {
     private static final String TAG = "MainActivity";
 
-    private static final boolean FLIP_FRAMES_VERTICALLY = false;
+    private static final boolean FLIP_FRAMES_VERTICALLY = true;
 
     protected FrameProcessor processor;
     protected CameraXPreviewHelper cameraHelper;
@@ -36,8 +36,8 @@ public class CameraPreviewActivity extends AppCompatActivity {
     private ApplicationInfo applicationInfo;
 
     private static final String BINARY_GRAPH_NAME = "card_liveness_graph.binarypb";
-    private static final String INPUT_VIDEO_STREAM_NAME = "input_frames";
-    private static final String OUTPUT_VIDEO_STREAM_NAME = "output_frames";
+    private static final String INPUT_VIDEO_STREAM_NAME = "input_video";
+    private static final String OUTPUT_VIDEO_STREAM_NAME = "output_video";
 
     static {
         System.loadLibrary("mediapipe_jni");
@@ -124,7 +124,9 @@ public class CameraPreviewActivity extends AppCompatActivity {
                 surfaceTexture -> {
                     onCameraStarted(surfaceTexture);
                 });
+//        CameraHelper.CameraFacing cameraFacing =  CameraHelper.CameraFacing.BACK;
         CameraHelper.CameraFacing cameraFacing =  CameraHelper.CameraFacing.FRONT;
+
         cameraHelper.startCamera(
                 this, cameraFacing, /*unusedSurfaceTexture=*/ null, cameraTargetResolution());
     }
